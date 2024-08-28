@@ -1,6 +1,19 @@
 # Thing-Engine
 In browser game engine
 
+## How to run
+install npm 
+npm install typescript --save-dev
+
+in the repo
+npm install // install packages
+
+## Tools Used
+
+- webGL
+- external physics engine
+- Typescript
+- HTML
 
 ## Components
 - rendering 
