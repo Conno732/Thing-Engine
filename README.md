@@ -2,14 +2,9 @@
 In browser game engine
 
 ## How to run
-install npm 
-npm install typescript --save-dev
-
-in the repo
-npm install // install packages
+See npm scripts
 
 ## Tools Used
-
 - webGL
 - external physics engine
 - Typescript
@@ -60,10 +55,6 @@ WARNING THIS IS FUN STUFF THAT IS ONLY NICE TO HAVE
     - go crazy!!!!
  
 
-next steps:
- - decide our tech stack
- - get setup with our environment
-- CODING!!!!!
 
 
 
