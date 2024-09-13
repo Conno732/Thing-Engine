@@ -1,4 +1,4 @@
-import { Mesh3D } from "../Mesh3D";
+import { Mesh3D, UniformLocations } from "../Mesh3D";
 
 export class WebGL3DStateManager {
 	webgl: WebGL2RenderingContext;
@@ -23,6 +23,7 @@ export class WebGL3DStateManager {
 				throw new Error(
 					`Mismatch on program attributes and supplied attribute data ${vertexArrayData.name}`
 				);
+			this.webgl.enableVertexAttribArray(loc);
 
 			this.webgl.bindBuffer(
 				this.webgl.ARRAY_BUFFER,
@@ -55,7 +56,12 @@ export class WebGL3DStateManager {
 			this.webgl.STATIC_DRAW
 		);
 
-		return new Mesh3D(programName, vao, vertexIndices.length);
+		return new Mesh3D(
+			programName,
+			vao,
+			vertexIndices.length,
+			programData.uniformLocs
+		);
 	}
 
 	setUpStateForMeshAndDraw(mesh3D: Mesh3D) {
@@ -67,7 +73,6 @@ export class WebGL3DStateManager {
 			this.webgl.UNSIGNED_SHORT,
 			0
 		);
-		console.log(mesh3D);
 	}
 
 	createProgram(
@@ -120,10 +125,11 @@ export class WebGL3DStateManager {
 		};
 	}
 
-	private useProgram(programId: string) {
+	useProgram(programId: string) {
 		if (programId == this.currentProgram) return;
 		this.webgl.useProgram(this.programs[programId].program);
 		this.currentProgram = programId;
+		this.programs[programId].program;
 	}
 
 	private compileShader(source: string, type: number) {
@@ -159,8 +165,4 @@ type ProgramData = {
 
 type AttributeLocations = {
 	[name: string]: number;
-};
-
-type UniformLocations = {
-	[name: string]: WebGLUniformLocation;
 };
