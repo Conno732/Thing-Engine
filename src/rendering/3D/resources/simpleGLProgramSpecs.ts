@@ -7,6 +7,7 @@ in vec2 texcoord;
 
 uniform mat4 projection;
 uniform mat4 modelView;
+uniform mat4 camera;
 
 out vec3 v_normal;
 out vec2 v_texcoord;

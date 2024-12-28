@@ -55,30 +55,10 @@ webgl.uniformMatrix4fv(mesh.uniformLocs["projection"], false, projection);
 let modelView = mat4.identity(mat4.create());
 
 modelView = mat4.translate(mat4.create(), modelView, [0, 0, -4]);
-
-modelView = mat4.rotateX(mat4.create(), modelView, 0.5);
-
+modelView = mat4.rotateX(mat4.create(), modelView, 0.9);
 modelView = mat4.rotateY(mat4.create(), modelView, 0.5);
+modelView = mat4.scale(mat4.create(), modelView, [2, 1, 1]);
 
 webgl.uniformMatrix4fv(mesh.uniformLocs["modelView"], false, modelView);
 
-webgl.drawElements(webgl.TRIANGLES, mesh.count, webgl.UNSIGNED_SHORT, 0);
-
-// stateManager.setUpStateForMeshAndDraw(mesh);
-
-// const makeTextCanvas = (
-// 	text: string,
-// 	width: number,
-// 	height: number,
-// 	color: string
-// ) => {
-// 	const ctx = document.createElement("canvas").getContext("2d");
-// 	ctx.canvas.width = width;
-// 	ctx.canvas.height = height;
-// 	ctx.font = `bold ${((height * 5) / 6) | 0}px sans-serif`;
-// 	ctx.textAlign = "center";
-// 	ctx.textBaseline = "middle";
-// 	ctx.fillStyle = color;
-// 	ctx.fillText(text, width / 2, height / 2);
-// 	return ctx.canvas;
-// };
+stateManager.setUpStateForMeshAndDraw(mesh);

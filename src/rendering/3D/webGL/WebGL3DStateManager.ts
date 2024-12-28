@@ -125,11 +125,11 @@ export class WebGL3DStateManager {
 		};
 	}
 
-	useProgram(programId: string) {
-		if (programId == this.currentProgram) return;
-		this.webgl.useProgram(this.programs[programId].program);
-		this.currentProgram = programId;
-		this.programs[programId].program;
+	useProgram(programName: string) {
+		if (programName == this.currentProgram) return;
+		this.webgl.useProgram(this.programs[programName].program);
+		this.currentProgram = programName;
+		this.programs[programName].program;
 	}
 
 	private compileShader(source: string, type: number) {
