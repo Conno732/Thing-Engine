@@ -25,21 +25,13 @@ precision highp float;
 in vec3 v_normal;
 in vec2 v_texcoord;
 
-uniform sampler2D diffuse;
-uniform sampler2D decal;
-uniform vec4 diffuseMult;
-uniform vec3 lightDir;
+
+uniform vec4 color;
 
 out vec4 outColor;
 
 void main() {
-    vec3 normal = normalize(v_normal);
-    float light = dot(normal, lightDir) * 0.5 + 0.5;
-    vec4 color = texture(diffuse, v_texcoord) * diffuseMult;
-    vec4 decalColor = texture(decal, v_texcoord);
-    decalColor.rgb *= decalColor.a;
-    color = color * (1.0 - decalColor.a) + decalColor; 
-    outColor = vec4(color.rgb * light, color.a);
+  outColor = color;
 }
 `;
 
@@ -105,8 +97,5 @@ export const simple3DMeshAttributeNames = new Set<string>([
 export const simple3DMeshUniformNames = new Set<string>([
 	"projection",
 	"modelView",
-	"diffuse",
-	"decal",
-	"diffuseMult",
-	"lightDir",
+	"color",
 ]);

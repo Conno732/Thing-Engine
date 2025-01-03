@@ -51,14 +51,9 @@ const projection = mat4.perspective(
 	0.1, // near
 	10 // far
 );
-webgl.uniformMatrix4fv(mesh.uniformLocs["projection"], false, projection);
-let modelView = mat4.identity(mat4.create());
 
-modelView = mat4.translate(mat4.create(), modelView, [0, 0, -4]);
-modelView = mat4.rotateX(mat4.create(), modelView, 0.9);
-modelView = mat4.rotateY(mat4.create(), modelView, 0.5);
-modelView = mat4.scale(mat4.create(), modelView, [2, 1, 1]);
-
-webgl.uniformMatrix4fv(mesh.uniformLocs["modelView"], false, modelView);
-
+mesh.setProjection(projection);
+mesh.setColorRgba([0.0, 1.0, 1.0, 1.0]);
+mesh.translation.vec3[2] = -4;
+console.log(mesh.translation);
 stateManager.setUpStateForMeshAndDraw(mesh);

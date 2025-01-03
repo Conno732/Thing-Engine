@@ -67,6 +67,7 @@ export class WebGL3DStateManager {
 	setUpStateForMeshAndDraw(mesh3D: Mesh3D) {
 		this.useProgram(mesh3D.programName);
 		this.webgl.bindVertexArray(mesh3D.vao);
+		mesh3D.setupStateForDraw(this.webgl);
 		this.webgl.drawElements(
 			this.webgl.TRIANGLES,
 			mesh3D.count,
