@@ -53,7 +53,23 @@ const projection = mat4.perspective(
 );
 
 mesh.setProjection(projection);
-mesh.setColorRgba([0.0, 1.0, 1.0, 1.0]);
-mesh.translation.vec3[2] = -4;
-console.log(mesh.translation);
-stateManager.setUpStateForMeshAndDraw(mesh);
+mesh.setColorRgba([1.0, 1.0, 1.0, 1.0]);
+mesh.transform.translate([0, 0, -5]);
+console.log(mesh);
+let lastTime: number | null = null;
+let c = 0;
+function update(time: number) {
+	if (lastTime !== null) {
+		const deltaTime = time - lastTime;
+
+		mesh.transform.eulerRotate([0, 0.001 * deltaTime, 0.001 * deltaTime]);
+		c = c + 0.001 * deltaTime;
+		mesh.color.vec4[1] = Math.sin(c);
+		stateManager.setUpStateForMeshAndDraw(mesh);
+	}
+
+	lastTime = time;
+	requestAnimationFrame(update);
+}
+
+requestAnimationFrame(update);

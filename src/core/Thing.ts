@@ -1,15 +1,14 @@
-import { Rotation } from "./common/Rotation";
-import { Scale } from "./common/Scale";
-import { Translation } from "./common/Translation";
+import { Transform } from "./common/location/Transform";
 
-export class Thing {
-	public translation: Translation;
-	public scale: Scale;
-	public rotation: Rotation;
+export abstract class Thing {
+	public transform: Transform = new Transform();
 
-	constructor() {
-		this.translation = new Translation([0, 0, 0]);
-		this.scale = new Scale([1, 1, 1]);
-		this.rotation = new Rotation([0, 0, 0]);
-	}
+	constructor() {}
+
+	public appendChild(thing: Thing) {}
+
+	public appendParent(thing: Thing) {}
+
+	// (should be) called by higher level managment when it leaves the mananagment tree
+	public abstract destroy(): void;
 }

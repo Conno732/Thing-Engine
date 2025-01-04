@@ -21,31 +21,35 @@ export class Mesh3D extends Thing {
 		modelView = mat4.translate(
 			mat4.create(),
 			modelView,
-			this.translation.vec3
+			this.transform.getTranslation().vec3
 		);
 		modelView = mat4.rotateX(
 			mat4.create(),
 			modelView,
-			this.rotation.vec3[0]
+			this.transform.getRotation().vec3[0]
 		);
 		modelView = mat4.rotateY(
 			mat4.create(),
 			modelView,
-			this.rotation.vec3[1]
+			this.transform.getRotation().vec3[1]
 		);
 		modelView = mat4.rotateZ(
 			mat4.create(),
 			modelView,
-			this.rotation.vec3[2]
+			this.transform.getRotation().vec3[2]
 		);
-		modelView = mat4.scale(mat4.create(), modelView, this.scale.vec3);
+		modelView = mat4.scale(
+			mat4.create(),
+			modelView,
+			this.transform.getScale().vec3
+		);
 		webgl.uniformMatrix4fv(this.uniformLocs["modelView"], false, modelView);
 		webgl.uniformMatrix4fv(
 			this.uniformLocs["projection"],
 			false,
 			this.projection
 		);
-		webgl.uniform4fv(this.uniformLocs["color"], [0.0, 1.0, 1.0, 1.0]);
+		webgl.uniform4fv(this.uniformLocs["color"], this.color.vec4);
 	}
 
 	public setProjection(projection: mat4) {
@@ -57,6 +61,10 @@ export class Mesh3D extends Thing {
 	}
 
 	public setTexture() {}
+
+	public destroy(): void {
+		throw new Error("Method not implemented.");
+	}
 }
 
 export type UniformLocations = {
