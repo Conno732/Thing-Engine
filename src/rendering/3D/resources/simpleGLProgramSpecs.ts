@@ -27,11 +27,12 @@ in vec2 v_texcoord;
 
 
 uniform vec4 color;
+uniform sampler2D u_texture;
 
 out vec4 outColor;
 
 void main() {
-  outColor = color;
+  outColor = color * texture(u_texture, v_texcoord);
 }
 `;
 
@@ -98,4 +99,5 @@ export const simple3DMeshUniformNames = new Set<string>([
 	"projection",
 	"modelView",
 	"color",
+	"u_texture",
 ]);

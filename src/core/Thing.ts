@@ -1,6 +1,7 @@
 import { Transform } from "./common/location/Transform";
 
 export abstract class Thing {
+	public name: string;
 	public transform: Transform = new Transform();
 
 	constructor() {}

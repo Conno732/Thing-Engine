@@ -1,22 +1,22 @@
-import { mat4, vec4 } from "gl-matrix";
+import { mat4 } from "gl-matrix";
 import { Thing } from "../../core/Thing";
-import { Color } from "../../core/common/Color";
+import { Material } from "../common/Material";
 
 export class Mesh3D extends Thing {
-	public color: Color;
 	public projection: mat4;
 
 	constructor(
 		public programName: string,
 		public vao: WebGLVertexArrayObject,
 		public count: number,
-		public uniformLocs: UniformLocations
+		public uniformLocs: UniformLocations,
+		public material: Material
 	) {
 		super();
-		this.color = new Color([1, 1, 1, 0]);
 	}
 
 	public setupStateForDraw(webgl: WebGL2RenderingContext) {
+		webgl.bindVertexArray(this.vao);
 		let modelView = mat4.identity(mat4.create());
 		modelView = mat4.translate(
 			mat4.create(),
@@ -49,15 +49,13 @@ export class Mesh3D extends Thing {
 			false,
 			this.projection
 		);
-		webgl.uniform4fv(this.uniformLocs["color"], this.color.vec4);
+		webgl.uniform4fv(this.uniformLocs["color"], this.material.color.rgba);
+		this.uniformLocs["u_texture"]
+		this.material.texture.setupStateForDraw(webgl);
 	}
 
 	public setProjection(projection: mat4) {
 		this.projection = projection;
-	}
-
-	public setColorRgba(colorVector: vec4) {
-		this.color = new Color(colorVector);
 	}
 
 	public setTexture() {}

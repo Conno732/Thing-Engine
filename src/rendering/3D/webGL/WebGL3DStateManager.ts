@@ -1,18 +1,65 @@
+import { Material } from "../../common/Material";
+import { Texture, TextureType } from "../../common/Texture";
 import { Mesh3D, UniformLocations } from "../Mesh3D";
 
 export class WebGL3DStateManager {
 	webgl: WebGL2RenderingContext;
 	programs: { [key: string]: ProgramData } = {};
 	currentProgram: string = null;
+	defaultTexture: WebGLTexture;
 
 	constructor(webgl: WebGL2RenderingContext) {
 		this.webgl = webgl;
 	}
 
+	createTexture(src: string = null, type: TextureType): Texture {
+		if (src == null) {
+			return new Texture(this.defaultTexture, TextureType.IMAGE);
+		}
+
+		const image = new Image();
+		image.src = src;
+		const texture = this.webgl.createTexture();
+		this.webgl.bindTexture(this.webgl.TEXTURE_2D, texture);
+		this.webgl.texImage2D(
+			this.webgl.TEXTURE_2D,
+			0,
+			this.webgl.RGBA,
+			1,
+			1,
+			0,
+			this.webgl.RGBA,
+			this.webgl.UNSIGNED_BYTE,
+			new Uint8Array([0, 111, 88, 255])
+		);
+
+		const loadFunc = () => {
+			this.webgl.bindTexture(this.webgl.TEXTURE_2D, texture);
+			this.webgl.texImage2D(
+				this.webgl.TEXTURE_2D,
+				0,
+				this.webgl.RGBA,
+				this.webgl.RGBA,
+				this.webgl.UNSIGNED_BYTE,
+				image
+			);
+			this.webgl.generateMipmap(this.webgl.TEXTURE_2D);
+		};
+
+		image.addEventListener("load", loadFunc);
+		image.addEventListener("error", () =>
+			console.log("failed to load image", image.src)
+		);
+		if (image.complete) loadFunc();
+
+		return new Texture(texture, type);
+	}
+
 	createMesh3D(
 		programName: string,
 		vertexArrayDatas: VertexArrayData[],
-		vertexIndices: Uint16Array
+		vertexIndices: Uint16Array,
+		material: Material
 	): Mesh3D {
 		const programData = this.programs[programName];
 		const vao = this.webgl.createVertexArray();
@@ -60,7 +107,8 @@ export class WebGL3DStateManager {
 			programName,
 			vao,
 			vertexIndices.length,
-			programData.uniformLocs
+			programData.uniformLocs,
+			material
 		);
 	}
 
